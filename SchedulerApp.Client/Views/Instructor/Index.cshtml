@@ -1,0 +1,37 @@
+﻿@model SchedulerApp.Client.ViewModels.CoursesVM
+
+<p>
+    @Html.ActionLink("Create", "CreateCourse", new { id = ViewBag.ID })
+</p>
+<table class="table">
+    <tr>
+        <th></th>
+    </tr>
+    @{  
+
+        
+          foreach (var item in Model.InstructorCourses)
+            {
+                <tr>
+                    <td>
+                        @item.CourseName
+                    </td>
+
+                    <td>
+                        @item.CourseHour
+                    </td>
+
+                    <td>
+                        @item.Capacity
+                    </td>
+
+                   <td>
+                    @Html.ActionLink("Edit", "Edit", new { courseid = item.CourseID, id=ViewBag.ID  }) |
+                    @Html.ActionLink("View Students", "ViewStudents", new { courseid=item.CourseID, id = ViewBag.ID  }) |
+                    @Html.ActionLink("Delete", "Delete", new { courseid = item.CourseID , id = ViewBag.ID })
+                    </td>
+                </tr>
+           }
+    }
+        
+</table>
