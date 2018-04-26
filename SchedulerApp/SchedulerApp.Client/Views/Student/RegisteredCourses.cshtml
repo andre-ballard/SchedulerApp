@@ -1,0 +1,51 @@
+﻿@model SchedulerApp.Client.ViewModels.CoursesVM
+<p>
+
+</p>
+<table class="table">
+
+    <tr>
+
+        <th>
+            Course Name
+        </th>
+        <th>
+            Instructor
+        </th>
+        <th>
+            Capacity
+        </th>
+        <th>
+            Course Hour
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.RegisteredCourses)
+    {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.CourseName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Instructor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Capacity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CourseHour)
+            </td>
+
+            
+            <td>
+                @Html.ActionLink("Drop", "DropRegisteredCourse", new { id = ViewBag.ID, courseid = item.CourseID })
+            </td>
+
+        </tr>
+    }
+
+    @Html.ActionLink("Browse Courses", "Index", new { ViewBag.ID })
+    @Html.ActionLink("Pending Courses", "PendingCourses", new {userid = ViewBag.ID })
+</table>

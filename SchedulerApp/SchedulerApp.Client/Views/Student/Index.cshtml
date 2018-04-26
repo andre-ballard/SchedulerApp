@@ -1,0 +1,31 @@
+﻿@model SchedulerApp.Client.ViewModels.CoursesVM
+
+<br />
+@ViewBag.Error
+<br />
+<br />
+<p>
+    Courses
+</p>
+ <table class="table">
+    <tr>
+        <th></th>
+    </tr>
+
+    @{foreach (var item in Model.Courses)
+        {
+    <tr>
+      
+        <td>
+            Course Name: @item.CourseName   &nbsp;&nbsp;&nbsp;&nbsp;  Course Hour: @item.CourseHour    &nbsp;&nbsp;&nbsp;&nbsp;  Course Capacity: @item.Capacity   &nbsp;&nbsp;&nbsp;&nbsp;   Instructor: @item.Instructor
+            @Html.ActionLink("Add Course", "Add", new {  courseid=item.CourseID, id=TempData["id"] }) |
+            @Html.ActionLink("Regiser Course", "RegisterCourse", new { courseid=item.CourseID , id=TempData["id"]})
+        </td>
+    </tr>
+        }
+     }
+
+@Html.ActionLink("View Pending Courses", "PendingCourses", new { userid = TempData["ID"] })
+@Html.ActionLink("Submitted Courses", "RegisteredCourses", new { userid = TempData["ID"] })
+
+</table>
