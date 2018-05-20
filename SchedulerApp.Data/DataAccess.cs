@@ -14,7 +14,7 @@ namespace SchedulerApp.Data
     /// </summary>
     public class DataAccess
     {
-        private string _ConnectionString = "";
+        private string _ConnectionString = "Data Source=your-fitness.database.windows.net;Initial Catalog=SchedulerApp;Integrated Security=False;User ID=andre.ballard;Password=Tamuk2016;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
 
         public List<Person> GetStudents(int i)

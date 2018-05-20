@@ -175,6 +175,8 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Properties\PublishProfiles\MyScheduleApp - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\YourFitness - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -231,7 +233,7 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ScheduleApp.Logic\SchedulerApp.Logic.csproj">
+    <ProjectReference Include="..\SchedulerApp.Logic\SchedulerApp.Logic.csproj">
       <Project>{B8556AFB-2C76-40D2-9FFB-8480473455C8}</Project>
       <Name>SchedulerApp.Logic</Name>
     </ProjectReference>
