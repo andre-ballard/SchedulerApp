@@ -1,4 +1,5 @@
-﻿using SchedulerApp.Client.Models;
+﻿using SchedulerApp.Client.Interfaces;
+using SchedulerApp.Client.Models;
 using SchedulerApp.Client.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Web.Mvc;
 
 namespace SchedulerApp.Client.Controllers
 {
-    public class StudentController : Controller
+    public class StudentController : Controller, IStudent
     {
         ClientBroker cb = new ClientBroker();
         // GET: Student

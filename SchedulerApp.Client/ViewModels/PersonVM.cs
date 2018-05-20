@@ -1,5 +1,4 @@
 ﻿using SchedulerApp.Client.Models;
-using SchedulerApp.Logic;
 using System;
 using System.Collections.Generic;
 using System.Linq;

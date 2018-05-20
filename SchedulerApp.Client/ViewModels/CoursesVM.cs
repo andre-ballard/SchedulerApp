@@ -14,13 +14,13 @@ namespace SchedulerApp.Client.ViewModels
 
         public CoursesVM()
         {
-
-
         }
+
         public CoursesVM(int user)
         {
             User = user;
         }
+
         public List<CoursesDTO> Courses
         {
             get
@@ -28,8 +28,6 @@ namespace SchedulerApp.Client.ViewModels
                 return cb.Courses();
             }
         }
-
-
 
         public List<CoursesDTO> PendingCourses
         {

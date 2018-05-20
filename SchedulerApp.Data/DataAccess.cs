@@ -14,13 +14,13 @@ namespace SchedulerApp.Data
     /// </summary>
     public class DataAccess
     {
-        private string _ConnectionString = "";
+        private string _ConnectionString = "Server=tcp:your-fitness.database.windows.net,1433;Initial Catalog=SchedulerApp;Persist Security Info=False;User ID=andre.ballard;Password=Tamuk2016;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
 
         public List<Person> GetStudents(int i)
         {
             var ds = new DataSet();
-            var command = new SqlCommand("select FirstName, LastName from Person.Person join Person.PersonCourses on Person.PersonCourses.PersonID = Person.Person.PersonID where Not Person.PersonCourses.CourseStatus = 3 and  Person.PersonCourses.CourseID = @id");
+            var command = new SqlCommand("select Person.Person.PersonID, FirstName, LastName from Person.Person join Person.PersonCourses on Person.PersonCourses.PersonID = Person.Person.PersonID where Not Person.PersonCourses.CourseStatus = 3 and  Person.PersonCourses.CourseID = @id");
             var p = new List<Person>();
             command.Parameters.AddRange(new SqlParameter[]
             {
@@ -38,7 +38,7 @@ namespace SchedulerApp.Data
 
             foreach (DataRow item in ds.Tables[0].Rows)
             {
-                p.Add(new Person() { FirstName = item["FirstName"].ToString(), LastName = item["LastName"].ToString() });
+                p.Add(new Person() { PersonID = (Int32) item["PersonID"], FirstName = item["FirstName"].ToString(), LastName = item["LastName"].ToString() });
             }
 
             return p;
@@ -384,10 +384,38 @@ namespace SchedulerApp.Data
                 c.Open();
                 command2.Connection = c;
                 command.Connection = c;
-                result = command2.ExecuteNonQuery();
-                command.ExecuteNonQuery();
+                result = command2.ExecuteNonQuery() + command.ExecuteNonQuery();
             }
-            return result > 0;
+            return result == 2;
+        }
+
+        public bool DeleteStudent(int studentid, int courseid)
+        {
+            
+            var command = new SqlCommand("Delete from Person.PersonCourses where PersonID = @personid and CourseID = @courseid");
+            var command2 = new SqlCommand("Update Person.Courses Set Capacity = Capacity - 1 where CourseID = @courseid");
+            int result = 0;
+
+            
+
+            command.Parameters.AddRange(new SqlParameter[]
+             {
+                    new SqlParameter("personid", studentid),
+                    new SqlParameter("courseid", courseid)
+             });
+            command2.Parameters.AddRange(new SqlParameter[]
+             {
+                    new SqlParameter("courseid", courseid)
+             });
+            using (var c = GetConnectionInstance())
+            {
+                c.Open();
+                command.Connection = c;
+                command2.Connection = c;
+                result = command2.ExecuteNonQuery() + command.ExecuteNonQuery();
+                
+            }
+            return result == 2;
         }
 
         public bool AddCourse(int courseid, int id)

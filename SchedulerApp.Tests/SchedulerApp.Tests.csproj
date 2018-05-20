@@ -57,7 +57,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ScheduleLogic\SchedulerApp.Logic.csproj">
+    <ProjectReference Include="..\ScheduleApp.Logic\SchedulerApp.Logic.csproj">
       <Project>{B8556AFB-2C76-40D2-9FFB-8480473455C8}</Project>
       <Name>SchedulerApp.Logic</Name>
     </ProjectReference>

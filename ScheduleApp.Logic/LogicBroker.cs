@@ -6,68 +6,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ScheduleLogic.Models;
+using ScheduleLogic.Mapper;
 
 namespace SchedulerApp.Logic
 {
     public class LogicBroker
     {
         private DataAccess db = new DataAccess();
-
-        
-        public MapperConfiguration pdTop = new MapperConfiguration(p => p.CreateMap<PersonDAO, Person>().ForMember(d=>d.RoleID, c=>c.MapFrom("roleid")));
-
-        /// <summary>
-        /// auto mapper seperates configuration from code
-        /// if the fields does not match between the two it does not fail 
-        /// </summary>
-        public MapperConfiguration pToPd = new MapperConfiguration(p => p.CreateMap<Person, PersonDAO>()
-        .ForMember(d => d.firstname, c => c.MapFrom("FirstName"))
-        .ForMember(d => d.personid, c=> c.MapFrom("PersonID")));
-        // public MapperConfiguration p = new MapperConfiguration(p => p.CreateMap<PersonDAO, Person>().ForMember(d => d.FirstName, c => c.MapFrom("FirstName")));
-        public MapperConfiguration cToCd = new MapperConfiguration(p => p.CreateMap<Courses, CoursesDAO>()
-        .ForMember(d => d.CourseName, c=>c.MapFrom("CourseName"))
-        );
-        public MapperConfiguration dToCc = new MapperConfiguration(p => p.CreateMap<CoursesDAO, Courses>().ForMember(d => d.CourseName, c => c.MapFrom("CourseName")));
-
-        /// <summary>
-        /// Maps word for word
-        /// </summary>
-        /// <param name="pd"></param>
-        /// <returns></returns>
-        public Person PersonDAOToPerson(PersonDAO pd)
-        {
-            return new Person() { FirstName = pd.firstname, LastName = pd.lastname };
-        }
-
-        private T PersonDAOToPerson2<T>(PersonDAO pd)
-        {
-            return pdTop.CreateMapper().Map<T>(pd);
-        }
-
-
-        private T PersonToPersonDAO<T>(Person p)
-        {
-            return pToPd.CreateMapper().Map<T>(p);
-
-        }
-
-        private T CoursesToCoursesDAO<T>(Courses c)
-        {
-            return cToCd.CreateMapper().Map<T>(c);
-        }
-
-        private T CoursesDAOToCourses<T>(CoursesDAO c)
-        {
-            return dToCc.CreateMapper().Map<T>(c);
-        }
+        private DAOMapper dm = new DAOMapper();
 
         public List<CoursesDAO> Courses()
         {
             var cd = new List<CoursesDAO>();
             foreach (var item in db.Courses())
             {
-                cd.Add(CoursesToCoursesDAO<CoursesDAO>(item));
+                cd.Add(dm.CoursesToCoursesDAO<CoursesDAO>(item));
             }
             return cd;
         }
@@ -77,7 +30,7 @@ namespace SchedulerApp.Logic
             var pd = new List<PersonDAO>();
             foreach (var item in db.Persons())
             {
-              pd.Add(PersonToPersonDAO<PersonDAO>(item));
+              pd.Add(dm.PersonToPersonDAO<PersonDAO>(item));
             }
             return pd;
         }
@@ -87,7 +40,7 @@ namespace SchedulerApp.Logic
             var pd = new List<PersonDAO>();
             foreach (var item in db.Instructors())
             {
-                pd.Add(PersonToPersonDAO<PersonDAO>(item));
+                pd.Add(dm.PersonToPersonDAO<PersonDAO>(item));
             }
             return pd;
         }
@@ -97,7 +50,7 @@ namespace SchedulerApp.Logic
             var pd = new List<PersonDAO>();
             foreach (var item in db.Students())
             {
-                pd.Add(PersonToPersonDAO<PersonDAO>(item));
+                pd.Add(dm.PersonToPersonDAO<PersonDAO>(item));
             }
             return pd;
         }
@@ -107,14 +60,14 @@ namespace SchedulerApp.Logic
             var pd = new List<PersonDAO>();
             foreach (var item in db.Registers())
             {
-                pd.Add(PersonToPersonDAO<PersonDAO>(item));
+                pd.Add(dm.PersonToPersonDAO<PersonDAO>(item));
             }
             return pd;
         }
 
         public bool CreatePerson(PersonDAO p)
         {
-            return db.CreatePerson(PersonDAOToPerson2<Person>(p));
+            return db.CreatePerson(dm.PersonDAOToPerson2<Person>(p));
         }
 
         public bool AddCourse(int courseid, int id)
@@ -124,7 +77,7 @@ namespace SchedulerApp.Logic
 
         public bool CreateCourse(CoursesDAO c, int id)
         {
-            return db.CreateCourse(CoursesDAOToCourses<Courses>(c), id);
+            return db.CreateCourse(dm.CoursesDAOToCourses<Courses>(c), id);
         }
 
         public bool RemovePendingCourse(int courseid, int id)
@@ -147,9 +100,14 @@ namespace SchedulerApp.Logic
             return db.DeleteCourse(courseid);
         }
 
+        public bool DeleteStudent(int studentid, int courseid)
+        {
+            return db.DeleteStudent(studentid,courseid);
+        }
+
         public bool EditCourse(CoursesDAO co)
         {
-            return db.EditCourse(CoursesDAOToCourses<Courses>(co));
+            return db.EditCourse(dm.CoursesDAOToCourses<Courses>(co));
         }
 
         public List<PersonDAO> GetStudents(int i)
@@ -158,15 +116,10 @@ namespace SchedulerApp.Logic
 
             foreach (var item in db.GetStudents(i))
             {
-                cl.Add(PersonDAOToPerson2<PersonDAO>(item));
+                cl.Add(dm.PersonToPersonDAO<PersonDAO>(item));
             }
 
             return cl;
-        }
-
-        private T PersonDAOToPerson2<T>(Person item)
-        {
-            return pToPd.CreateMapper().Map<T>(item);
         }
 
         public List<CoursesDAO> GetPendingCourses(int i)
@@ -174,7 +127,7 @@ namespace SchedulerApp.Logic
             var cd = new List<CoursesDAO>();
             foreach (var item in db.GetPendingCourses(i))
             {
-                cd.Add(CoursesToCoursesDAO<CoursesDAO>(item));
+                cd.Add(dm.CoursesToCoursesDAO<CoursesDAO>(item));
             }
             return cd;
         }
@@ -184,7 +137,7 @@ namespace SchedulerApp.Logic
             var cd = new List<CoursesDAO>();
             foreach (var item in db.GetInstructorCourses(i))
             {
-                cd.Add(CoursesToCoursesDAO<CoursesDAO>(item));
+                cd.Add(dm.CoursesToCoursesDAO<CoursesDAO>(item));
             }
             return cd;
         }
@@ -194,7 +147,7 @@ namespace SchedulerApp.Logic
             var cd = new List<CoursesDAO>();
             foreach (var item in db.GetRegisteredCourses(i))
             {
-                cd.Add(CoursesToCoursesDAO<CoursesDAO>(item));
+                cd.Add(dm.CoursesToCoursesDAO<CoursesDAO>(item));
             }
             return cd;
         }

@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -152,6 +153,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\IInstructor.cs" />
+    <Compile Include="Interfaces\IStudent.cs" />
+    <Compile Include="Mapper\DTOMapper.cs" />
     <Compile Include="Models\CoursesDTO.cs" />
     <Compile Include="Models\PersonDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -227,7 +231,7 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ScheduleLogic\SchedulerApp.Logic.csproj">
+    <ProjectReference Include="..\ScheduleApp.Logic\SchedulerApp.Logic.csproj">
       <Project>{B8556AFB-2C76-40D2-9FFB-8480473455C8}</Project>
       <Name>SchedulerApp.Logic</Name>
     </ProjectReference>

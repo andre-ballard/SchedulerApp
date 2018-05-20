@@ -16,9 +16,8 @@
             @item.LastName
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            
+            @Html.ActionLink("Delete", "DeleteStudent", new {  id=ViewBag.ID , courseid = ViewBag.CourseID, studentid = item.PersonID  })
         </td>
     </tr>
         } }

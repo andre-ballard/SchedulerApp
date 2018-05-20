@@ -1,4 +1,5 @@
-﻿using SchedulerApp.Client.Models;
+﻿using SchedulerApp.Client.Interfaces;
+using SchedulerApp.Client.Models;
 using SchedulerApp.Client.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Web.Mvc;
 
 namespace SchedulerApp.Client.Controllers
 {
-    public class InstructorController : Controller
+    public class InstructorController : Controller, IInstructor
     {
         ClientBroker cb = new ClientBroker();
         // GET: Instructor
@@ -39,9 +40,18 @@ namespace SchedulerApp.Client.Controllers
             return View("Index", new CoursesVM(id));
         }
 
+        public ActionResult DeleteStudent(int id, int courseid, int studentid)
+        {
+            ViewBag.ID = id;
+            ViewBag.CourseId = courseid;
+            cb.DeleteStudent(studentid, courseid);
+            return View("ViewStudents", new PersonVM(courseid));
+        }
+
         public ActionResult ViewStudents(int courseid, int id)
         {
             ViewBag.ID = id;
+            ViewBag.CourseId = courseid;
             return View(new PersonVM(courseid));
         }
 

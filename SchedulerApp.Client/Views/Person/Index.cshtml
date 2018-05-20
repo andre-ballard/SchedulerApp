@@ -23,7 +23,7 @@
             
             
                
-            <li>@item.FirstName @item.LastName @item.PersonID<input type="button" value="Login" onclick="location.href='@Url.Action("Index","Student", new { id = item.PersonID})'"/></li>
+            <li>@item.FirstName @item.LastName <input type="button" value="Login" onclick="location.href='@Url.Action("Index","Student", new { id = item.PersonID})'"/></li>
             
        }
     </ul>
